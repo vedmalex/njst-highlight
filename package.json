@@ -24,6 +24,17 @@
                 "configuration": "./javascript-template.json"
             },
             {
+                "id": "template",
+                "aliases": [
+                    "Template",
+                    "templ"
+                ],
+                "extensions": [
+                    ".templ"
+                ],
+                "configuration": "./javascript-template.json"
+            },
+            {
                 "id": "graphqltemplate",
                 "aliases": [
                     "GraphQlTemplate",
@@ -45,6 +56,11 @@
                 "language": "jstemplate",
                 "scopeName": "source.js.template",
                 "path": "./syntaxes/TemplateJavaScript.tmLanguage.json"
+            },
+            {
+                "language": "template",
+                "scopeName": "source.template",
+                "path": "./syntaxes/Template.tmLanguage"
             }
         ]
     }

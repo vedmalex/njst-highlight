@@ -1,5 +1,6 @@
 <#@ context 'renderOptions' #>
 <#@ noIndent #>
+// comment
 <#
 var blockList = renderOptions.blocks;
 var noIndent = renderOptions.noIndent;

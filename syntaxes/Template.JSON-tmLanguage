@@ -1,0 +1,51 @@
+{
+  "fileTypes": [
+    "templ"
+  ],
+  "name": "template",
+  "patterns": [
+    {
+      "include": "#main"
+    }
+  ],
+  "scopeName": "source.template",
+  "uuid": "",
+  "repository": {
+    "main": {
+      "patterns": [
+        {
+          "match": "(<#@)",
+          "captures": {
+            "1": {
+              "name": "text.template"
+            }
+          }
+        },
+        {
+          "match": "(<#-?)",
+          "captures": {
+            "1": {
+              "name": "text.template"
+            }
+          }
+        },
+        {
+          "match": "(-?#>)",
+          "captures": {
+            "1": {
+              "name": "text.template"
+            }
+          }
+        },
+        {
+          "match": "(//.*)",
+          "captures": {
+            "1": {
+              "name": "text.template"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
