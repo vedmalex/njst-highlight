@@ -1,3 +1,5 @@
+https://eeyo.io/iro/
+
 name               = template
 file_extensions [] = templ;
 
@@ -18,8 +20,7 @@ styles [] {
       color                           = yellow
       textmate_scope                  = entity.name.function
    }
-    
-   
+
    .brackets1 : style {
       color                           = red
       textmate_scope                  = keyword.control
@@ -38,6 +39,7 @@ styles [] {
 }
 
 contexts[] {
+
    main : context {
       : inline_push {
          regex            \= ($${__directive_start})
@@ -62,6 +64,9 @@ contexts[] {
             regex      \= ($${__codeblock_end})
             styles []   =  .brackets1;
          }
+         
+         // : include "codeblock.js" ;
+         
       }
       : pattern {
          regex    \= (//.*)
@@ -70,16 +75,31 @@ contexts[] {
       : inline_push {
          regex    \= ($${__inline_start})
          styles [] = .brackets1;
-         default_style     = .directive
+         // default_style     = .directive
          : pop {
             regex      \= ($${__inline_end})
             styles []   = .brackets1;
          }
+         
+         : include "inline.code.block.js" ;
       }
       : pattern {
          regex      \= ($${__codeblock_end})
          styles []   =  .illegal;
       }
-      
    }
+   
+   inline.code.block.js : context {
+      : pattern {
+         regex      \= (\\(?:\\|"))
+         styles [] = .illegal;
+      }
+   }
+   
+   // codeblock.js : context {
+   //    : pattern {
+   //       regex      \= (\\(?:\\|"))
+   //       styles [] = .illegal;
+   //    }
+   // }
 }
