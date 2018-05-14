@@ -1,0 +1,51 @@
+{
+    "name": "fte.js",
+    "displayName": "fte.js highlight for JavaScript",
+    "description": "fte.js syntax highlight for javascript authoring",
+    "version": "0.0.1",
+    "publisher": "vedmalex",
+    "engines": {
+        "vscode": "^1.5.0"
+    },
+    "categories": [
+        "Languages"
+    ],
+    "contributes": {
+        "languages": [
+            {
+                "id": "jstemplate",
+                "aliases": [
+                    "JavaScriptTemplate",
+                    "js"
+                ],
+                "extensions": [
+                    ".njs"
+                ],
+                "configuration": "./javascript-template.json"
+            },
+            {
+                "id": "graphqltemplate",
+                "aliases": [
+                    "GraphQlTemplate",
+                    "GQLT"
+                ],
+                "extensions": [
+                    ".tgraphql"
+                ],
+                "configuration": "./graphql.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "graphqltemplate",
+                "scopeName": "source.graphql.template",
+                "path": "./syntaxes/graphqlTemplate.tmLanguage.json"
+            },
+            {
+                "language": "jstemplate",
+                "scopeName": "source.js.template",
+                "path": "./syntaxes/TemplateJavaScript.tmLanguage.json"
+            }
+        ]
+    }
+}

@@ -1,0 +1,39 @@
+{
+  "name": "Tempalte JavaScript",
+  "scopeName": "source.js.template",
+  "fileTypes": [
+    ".njs",
+    ".njsx"
+  ],
+  "uuid": "805375ef-d614-41f5-8093-5843fe63ea82",
+  "patterns": [
+    {
+      "include": "#embedded-codeblock"
+    },
+    {
+      "include": "#embedded-unescaped"
+    }
+  ],
+  "repository": {
+    "embedded-codeblock": {
+      "begin": "<#-?",
+      "end": "-?#>",
+      "name": "source.js.embedded.codeblock.js",
+      "patterns": [
+        {
+          "include": "source.js"
+        }
+      ]
+    },
+    "embedded-unescaped": {
+      "begin": "[!#]\\{",
+      "end": "\\}",
+      "name": "source.js.embedded.unescaped.js",
+      "patterns": [
+        {
+          "include": "source.js"
+        }
+      ]
+    }
+  }
+}
