@@ -5,13 +5,22 @@
     ".njs",
     ".njsx"
   ],
-  "uuid": "805375ef-d614-41f5-8093-5843fe63ea82",
+  "uuid": "805375ef-d614-41f5-8093-5843fe633a82",
   "patterns": [
     {
       "include": "#embedded-codeblock"
     },
     {
       "include": "#embedded-unescaped"
+    },
+    {
+      "include": "source.js"
+    },
+    {
+      "include": "source.ts"
+    },
+    {
+      "include": "source.jsx"
     }
   ],
   "repository": {
