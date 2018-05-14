@@ -1,137 +1,149 @@
-<#@ context 'renderOptions' #>
-<#@ noIndent #>
-<#
-var blockList = renderOptions.blocks;
-var noIndent = renderOptions.noIndent;
-var needToIndent = false;
-if(!noIndent){
-  for (var i = 0, len = blockList.length; i < len; i++) {
-    if(blockList[i].indent){
-      needToIndent = true;
-      break;
-    }
+<#@ context 'pack' -#>
+<#@ chunks '$$$main$$$' -#>
+
+<#- chunkStart(`./index.js`); -#>
+<# for(let entity of pack.entities){-#>
+import #{entity.name}Resource, {extension as #{entity.name}Extension } from './#{entity.name}/queries';
+<#}-#>
+
+<# for(let entity of pack.entities){-#>
+import #{entity.name}UIX from './#{entity.name}/uix';
+<#}-#>
+
+import { data } from 'oda-aor-rest';
+
+import Admin from './admin';
+
+export { Admin };
+
+export class Resources extends data.resource.ResourceContainer {
+  constructor(...args){
+    super(...args);
+    this.override([
+<# for(let entity of pack.entities){-#>
+      #{entity.name}Resource,
+<#}-#>
+<# for(let entity of pack.entities){-#>
+      ...#{entity.name}Extension,
+<#}-#>
+    ]);
   }
-} else {
-  needToIndent = !noIndent;
 }
--#>
-var escapeExp = /[&<>"]/,
-    escapeAmpExp = /&/g,
-    escapeLtExp = /</g,
-    escapeGtExp = />/g,
-    escapeQuotExp = /"/g;
 
-function escapeIt (text) {
-  if (text == null) {
-    return '';
-  }
-
-  var result = text.toString();
-  if (!escapeExp.test(result)) {
-    return result;
-  }
-
-  return result.replace(escapeAmpExp, '&amp;')
-  .replace(escapeLtExp, '&lt;')
-  .replace(escapeGtExp, '&gt;')
-  .replace(escapeQuotExp, '&quot;');
+export const uix = {
+<# for(let entity of pack.entities){-#>
+  "#{pack.role}/#{entity.name}": #{entity.name}UIX,
+<#}-#>
 };
-<#if(needToIndent){ -#>
-function applyIndent(_str, _indent) {
-  var str = String(_str);
-  var indent = '';
-  if (typeof _indent == 'number' && _indent > 0) {
-    var res = '';
-    for (var i = 0; i < _indent; i++) {
-      res += ' ';
+
+<#- chunkStart(`./i18n/index.js`); -#>
+import merge from 'lodash/merge';
+
+<# for(let entity of pack.entities){-#>
+import #{entity.name}Translate from './#{entity.name}';
+<#}-#>
+
+const messages = {
+  uix: {
+    "filter": {
+      "search": "Search",
+      "exists": "%{name} exists",
+      "eq": "%{name} =",
+      "ne": "%{name} !=",
+      "lte": "%{name} <=",
+      "gte": "%{name} >=",
+      "lt": "%{name} <",
+      "gt": "%{name} >",
+      "imatch": "%{name}",
+      "in": "%{name} in",
+      "nin": "%{name} not in",
+    },
+    "actionType": {
+      "CREATE": "Create",
+      "UPDATE": "Update Existing",
+      "CLONE": "Copy Selected",
+      "USE": "Use Existing",
+      "UNLINK": "Unlink",
+      "ExpectedTo": "Expected To"
     }
-    indent = res;
-  }
-  if (typeof _indent == 'string' && _indent.length > 0) {
-    indent = _indent;
-  }
-  if (indent && str) {
-    return str.split('\n').map(function (s) {
-        return indent + s;
-    }).join('\n');
-  } else {
-    return str;
   }
 }
+
+export default
+  merge(
+    messages,
+<# for(let entity of pack.entities){-#>
+    #{entity.name}Translate,
 <#}-#>
-<#-
-function applyIndent(_str, _indent){
-  var str = String(_str);
-  var indent='';
-  if (typeof _indent == 'number' && _indent > 0){
-    var res = '';
-    for (var i=0;i < _indent; i++) {
-      res += ' ';
+#{entity.name}Translate,
+  )
+
+<#- chunkStart(`./resources.js`); -#>
+import React from 'react';
+import ListIcon from 'material-ui/svg-icons/action/view-list';
+
+export default {
+<# for(let entity of pack.entities){-#>
+  "#{pack.role}/#{entity.name}": { icon: <ListIcon />, visible: true, name: '#{entity.name}' },
+<#}-#>
+};
+
+<#- chunkStart(`./admin.js`); -#>
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { client } from 'oda-aor-rest';
+import Loading from 'react-loading-animation'
+import { Admin, Resource, Delete } from 'admin-on-rest';
+import { englishMessages } from 'admin-on-rest';
+import translation from './i18n';
+import merge from 'lodash/merge';
+
+const messages = {
+  'en': {
+    ...merge(
+        {},
+        englishMessages,
+        translation
+      ),
+  },
+};
+
+class OdaClientApp extends Component {
+  render() {
+    const { restClient, authClient, uix } = this.context;
+    if (!restClient) {
+      return <div className="loading-component"><Loading /></div>;
     }
-    indent = res;
-  }
-  if (typeof _indent == 'string' && _indent.length > 0){
-    indent = _indent
-  }
-  if (indent && str) {
-    return str.split('\n').map(function(s){
-      return indent + s;
-    }).join('\n');
-  } else {
-    return str;
+
+    return (
+      <Admin
+        {...this.props}
+        messages={messages}
+        locale="en"
+        authClient={authClient}
+        restClient={restClient}>
+        {role => Object.keys(uix)
+          .filter(resource => uix[resource].role === role)
+          .map(resource => <Resource
+            key={resource}
+            show={uix[resource].Show}
+            name={resource}
+            edit={uix[resource].Edit}
+            create={uix[resource].Create}
+            list={uix[resource].List}
+            remove={Delete}
+            options={{ label: `resources.${uix[resource].name}.name` }}
+          />
+        )}
+      </Admin>
+    );
   }
 }
-for (var i = 0, len = blockList.length; i < len; i++) {
-  var block = blockList[i];
-  var content = block.content;
-  var blockIndent = block.indent && !noIndent;
-  var indent = '';
-  if(block.indent){
-    indent = JSON.stringify(block.indent);
-}#>
-/*#{block.line}:#{block.column}*/
-<#
-  switch(block.type){
-    case 'text':
-#> out +=<#if (block.indent && !noIndent) { -#>
-#{JSON.stringify(applyIndent(content, block.indent))};
- <#- } else if(indent) { -#>
-#{indent} + #{JSON.stringify(content)};
-<#- } else { -#>
-#{JSON.stringify(content)};
-<#- }-#>
-<#
-    break;
-    case 'uexpression':
-#> out +=<#if (indent && !noIndent) { -#>
-applyIndent(escapeIt(#{content}), #{indent});
-<#- } else if(indent){ -#>
-#{indent} + escapeIt(#{content});
-<#- } else { -#>
-escapeIt(#{content});
-<#- } -#>
-<#
-    break;
-    case 'expression':
-#> out +=<#if (indent && !noIndent) { -#>
-applyIndent(#{content}, #{indent});
-<#- } else if(indent) { -#>
-#{indent} + #{content};
-<#- } else { -#>
-#{content};
-<#}-#>
-<#
-    break;
-    case 'codeblock':
-#> <#if (blockIndent) { -#>
-#{applyIndent(content, block.indent)}
-<#- } else if(block.indent) { -#>
-#{block.indent} !{content}
-<#- } else { -#>
-#{content}
-<#- } -#>
-<#
-    break;
-  }
--#>
-<#}-#>
+
+OdaClientApp.contextTypes = {
+  uix: PropTypes.object.isRequired,
+  authClient: PropTypes.func.isRequired,
+  restClient: PropTypes.func.isRequired,
+}
+
+export default OdaClientApp;

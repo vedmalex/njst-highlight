@@ -102,8 +102,13 @@
               <string>keyword.control.template</string>
             </dict>
           </dict>
-          <key>contentName</key>
-          <string>source.js.template</string>
+          <key>patterns</key>
+          <array> 
+            <dict>
+              <key>include</key>
+              <string>source.js</string>
+            </dict>
+           </array>
           <key>end</key>
           <string>(})</string>
           <key>endCaptures</key>
@@ -153,12 +158,6 @@
        </array>
     </dict>
     <key>main__2</key>
-    <dict>
-      <key>patterns</key>
-      <array> 
-       </array>
-    </dict>
-    <key>main__3</key>
     <dict>
       <key>patterns</key>
       <array> 
