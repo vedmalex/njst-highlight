@@ -36,7 +36,7 @@ function escapeIt (text) {
   .replace(escapeGtExp, '&gt;')
   .replace(escapeQuotExp, '&quot;');
 };
-<# if(needToIndent){ -#>
+<#if(needToIndent){ -#>
 function applyIndent(_str, _indent) {
   var str = String(_str);
   var indent = '';
@@ -88,7 +88,7 @@ for (var i = 0, len = blockList.length; i < len; i++) {
   var indent = '';
   if(block.indent){
     indent = JSON.stringify(block.indent);
-} #>
+}#>
 /*#{block.line}:#{block.column}*/
 <#
   switch(block.type){
@@ -102,7 +102,7 @@ for (var i = 0, len = blockList.length; i < len; i++) {
 <#- }-#>
 <#
     break;
-    case 'uexpression <#if (block.indent && !noIndent) { -#>':
+    case 'uexpression':
 #> out +=<# if (indent && !noIndent) { -#>
 applyIndent(escapeIt(#{content}), #{indent});
 <#- } else if(indent){ -#>
