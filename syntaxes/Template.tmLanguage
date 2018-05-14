@@ -34,55 +34,48 @@
             <key>1</key>
             <dict>
               <key>name</key>
-              <string>punctuation.template</string>
+              <string>keyword.control.template</string>
             </dict>
           </dict>
-          <key>contentName</key>
-          <string>punctuation.template</string>
+          <key>patterns</key>
+          <array> 
+            <dict>
+              <key>include</key>
+              <string>#main__1</string>
+            </dict>
+           </array>
           <key>end</key>
-          <string>(#&gt;)</string>
+          <string>(-?#&gt;)</string>
           <key>endCaptures</key>
           <dict>
             <key>1</key>
             <dict>
               <key>name</key>
-              <string>punctuation.template</string>
+              <string>keyword.control.template</string>
             </dict>
           </dict>
         </dict>
         <dict>
-          <key>match</key>
-          <string>(&lt;#@)</string>
-          <key>captures</key>
-          <dict>
-            <key>1</key>
-            <dict>
-              <key>name</key>
-              <string>punctuation.template</string>
-            </dict>
-          </dict>
-        </dict>
-        <dict>
-          <key>match</key>
+          <key>begin</key>
           <string>(&lt;#-?)</string>
-          <key>captures</key>
+          <key>beginCaptures</key>
           <dict>
             <key>1</key>
             <dict>
               <key>name</key>
-              <string>punctuation.template</string>
+              <string>keyword.control.template</string>
             </dict>
           </dict>
-        </dict>
-        <dict>
-          <key>match</key>
+          <key>contentName</key>
+          <string>source.js.template</string>
+          <key>end</key>
           <string>(-?#&gt;)</string>
-          <key>captures</key>
+          <key>endCaptures</key>
           <dict>
             <key>1</key>
             <dict>
               <key>name</key>
-              <string>punctuation.template</string>
+              <string>keyword.control.template</string>
             </dict>
           </dict>
         </dict>
@@ -100,17 +93,17 @@
         </dict>
         <dict>
           <key>begin</key>
-          <string>(#{)</string>
+          <string>([\x{0023}\x{007c}\x{0021}]{)</string>
           <key>beginCaptures</key>
           <dict>
             <key>1</key>
             <dict>
               <key>name</key>
-              <string>embedde.codeblock.separator.template</string>
+              <string>keyword.control.template</string>
             </dict>
           </dict>
           <key>contentName</key>
-          <string>punctuation.template</string>
+          <string>source.js.template</string>
           <key>end</key>
           <string>(})</string>
           <key>endCaptures</key>
@@ -118,19 +111,19 @@
             <key>1</key>
             <dict>
               <key>name</key>
-              <string>punctuation.template</string>
+              <string>keyword.control.template</string>
             </dict>
           </dict>
         </dict>
         <dict>
           <key>match</key>
-          <string>(})</string>
+          <string>(-?#&gt;)</string>
           <key>captures</key>
           <dict>
             <key>1</key>
             <dict>
               <key>name</key>
-              <string>embedde.codeblock.separator.template</string>
+              <string>invalid.illegal.template</string>
             </dict>
           </dict>
         </dict>
@@ -140,9 +133,32 @@
     <dict>
       <key>patterns</key>
       <array> 
+        <dict>
+          <key>match</key>
+          <string>(\w+)\s*(.*)(?=-?#&gt;)</string>
+          <key>captures</key>
+          <dict>
+            <key>1</key>
+            <dict>
+              <key>name</key>
+              <string>entity.name.function.template</string>
+            </dict>
+            <key>2</key>
+            <dict>
+              <key>name</key>
+              <string>comment.template</string>
+            </dict>
+          </dict>
+        </dict>
        </array>
     </dict>
     <key>main__2</key>
+    <dict>
+      <key>patterns</key>
+      <array> 
+       </array>
+    </dict>
+    <key>main__3</key>
     <dict>
       <key>patterns</key>
       <array> 

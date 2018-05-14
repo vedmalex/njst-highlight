@@ -1,0 +1,85 @@
+name               = template
+file_extensions [] = templ;
+
+__directive_start =  <#@
+__codeblock_start =  <#-?
+__codeblock_end =  -?#>
+__inline_start =  [#|!]{
+__inline_end =  }
+
+styles [] {
+  
+  .comments : style {
+     color                           = light_green
+     textmate_scope                  = comment
+  }
+  
+   .directiveName: style {
+      color                           = yellow
+      textmate_scope                  = entity.name.function
+   }
+    
+   
+   .brackets1 : style {
+      color                           = red
+      textmate_scope                  = keyword.control
+   }
+   
+   .illegal : style {
+      color                           = green
+      textmate_scope                  = invalid.illegal
+   }
+
+   .directive : style {
+      color                           = light_yellow
+      textmate_scope                  = source.js
+   }
+   
+}
+
+contexts[] {
+   main : context {
+      : inline_push {
+         regex            \= ($${__directive_start})
+         styles []         = .brackets1;
+         // default_style     = .directive
+         : pop {
+            regex      \= ($${__codeblock_end})
+            styles []   = .brackets1;
+            
+         }
+         : pattern  {
+            regex      \= (\w+)\s*(.*)(?=$${__codeblock_end})
+            styles []   = .directiveName, .comments;
+         }
+      }
+      
+      : inline_push {
+         regex      \= ($${__codeblock_start})
+         styles []   =  .brackets1;
+         default_style     = .directive
+         :pop {
+            regex      \= ($${__codeblock_end})
+            styles []   =  .brackets1;
+         }
+      }
+      : pattern {
+         regex    \= (//.*)
+         styles [] = .comments;
+      }
+      : inline_push {
+         regex    \= ($${__inline_start})
+         styles [] = .brackets1;
+         default_style     = .directive
+         : pop {
+            regex      \= ($${__inline_end})
+            styles []   = .brackets1;
+         }
+      }
+      : pattern {
+         regex      \= ($${__codeblock_end})
+         styles []   =  .illegal;
+      }
+      
+   }
+}
