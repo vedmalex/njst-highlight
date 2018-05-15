@@ -1,5 +1,3 @@
-https://eeyo.io/iro/
-
 name               = template
 file_extensions [] = templ;
 
@@ -9,6 +7,7 @@ __codeblock_end =  -?#>
 __inline_start =  [#|!]{
 __inline_end =  }
 
+
 styles [] {
   
   .comments : style {
@@ -16,14 +15,24 @@ styles [] {
      textmate_scope                  = comment
   }
   
+   .stringdouble : style {
+     color                           = yellow
+     textmate_scope                  = string.quoted.double.js
+  }
+  
+   .stringsingle : style {
+     color                           = yellow
+     textmate_scope                  = string.quoted.single.js
+  }
+
    .directiveName: style {
       color                           = yellow
-      textmate_scope                  = entity.name.function
+      textmate_scope                  = variable.other.readwrite.js
    }
 
    .brackets1 : style {
       color                           = red
-      textmate_scope                  = keyword.control
+      textmate_scope                  = punctuation.definition.tag.xml
    }
    
    .illegal : style {
@@ -31,75 +40,189 @@ styles [] {
       textmate_scope                  = invalid.illegal
    }
 
-   .directive : style {
+   .support : style {
       color                           = light_yellow
-      textmate_scope                  = source.js
+      textmate_scope                  = keyword.control.conditional.js
+   }
+
+   .constName : style {
+      color                           = red
+      textmate_scope                  = entity.name.type.js
    }
    
+   .punctuation : style {
+      color                           = red
+      textmate_scope                  = punctuation.accessor.js
+   }
+
 }
 
 contexts[] {
 
    main : context {
+   
+      : pattern {
+         regex      \= ($${__codeblock_start}\s+end\s+$${__codeblock_end})
+         styles []   =  .illegal;
+      }
+         
+      : inline_push {
+         regex      \= ($${__codeblock_start}\s+block\s+.+:\s+$${__codeblock_end})
+         styles []   =  .brackets1;
+         // default_style     = .directive
+         : pop {
+            regex      \= ($${__codeblock_start}\s+end\s+$${__codeblock_end})
+            styles []   =  .brackets1;
+         }
+         : include "main" ;
+      }
+
+      // directives
       : inline_push {
          regex            \= ($${__directive_start})
          styles []         = .brackets1;
-         // default_style     = .directive
          : pop {
             regex      \= ($${__codeblock_end})
             styles []   = .brackets1;
-            
          }
-         : pattern  {
-            regex      \= (\w+)\s*(.*)(?=$${__codeblock_end})
-            styles []   = .directiveName, .comments;
-         }
+         : include "registeredDirectives" ;
       }
-      
-      : inline_push {
-         regex      \= ($${__codeblock_start})
-         styles []   =  .brackets1;
-         default_style     = .directive
-         :pop {
-            regex      \= ($${__codeblock_end})
-            styles []   =  .brackets1;
-         }
-         
-         // : include "codeblock.js" ;
-         
-      }
-      : pattern {
-         regex    \= (//.*)
-         styles [] = .comments;
-      }
+
+      // inline block
       : inline_push {
          regex    \= ($${__inline_start})
          styles [] = .brackets1;
-         // default_style     = .directive
          : pop {
             regex      \= ($${__inline_end})
             styles []   = .brackets1;
          }
-         
-         : include "inline.code.block.js" ;
+         : include "registeredCommands" ;
+         : include "primitives" ;
       }
+
+      : inline_push {
+         regex      \= ($${__codeblock_start})(?!\{)
+         styles []   =  .brackets1;
+         // default_style     = .directive
+         : pop {
+            regex      \= ($${__codeblock_end})
+            styles []   =  .brackets1;
+         }
+         : include "codeblock" ;
+      }
+
       : pattern {
          regex      \= ($${__codeblock_end})
          styles []   =  .illegal;
       }
+      
+
    }
    
-   inline.code.block.js : context {
+   registeredDirectives : context {
       : pattern {
-         regex      \= (\\(?:\\|"))
-         styles [] = .illegal;
+         regex      \= (noIndent)(?=\s*$${__codeblock_end})
+         styles []   = .constName;
+      }
+
+      : inline_push {
+         regex      \= (chunks|context|alias|extend|requireAs)(?=\s)
+         styles []   = .constName;
+         // default_style     = .comments
+         :pop {
+            regex      \= (\s*)(?=$${__codeblock_end})
+            styles []   = .comments;
+         }
+         
+         : include "strings" ;
+         
       }
    }
    
-   // codeblock.js : context {
-   //    : pattern {
-   //       regex      \= (\\(?:\\|"))
-   //       styles [] = .illegal;
-   //    }
-   // }
+   registeredCommands : context {
+      : inline_push {
+         regex      \= (partial|content)(?=\s*\()
+         styles []   = .constName;
+         :pop {
+            regex      \= (\s*)(?=$${__inline_end})
+            styles []   = .comments;
+         }
+         
+         : include "primitives" ;
+      }
+   }
+   
+   primitives : context {
+      
+      : inline_push {
+      
+         regex            \= (\()
+         styles []         = .punctuation;
+         : pop {
+            regex      \= (\))
+            styles []   = .punctuation;
+         }
+         : include "primitives" ;
+         : include "strings" ;
+      }
+      
+      : pattern {
+         regex      \= (\))
+         styles []   = .illegal;
+      }
+      
+      : pattern {
+         regex      \= (,)
+         styles []   = .punctuation;
+      }
+      
+      : pattern {
+         regex      \= (\s|\t)
+         styles []   = .punctuation;
+      }
+      
+      : include "strings" ;
+      
+      : pattern {
+         regex      \= ([\.\+\w\d\\\:\!]*)
+         styles []   = .directiveName;
+      }
+   }
+   
+   strings : context {
+      : inline_push {
+         regex            \= (")
+         styles []         = .stringdouble;
+         default_style     = .stringdouble
+         : pop {
+            regex      \= (")
+            styles []   = .stringdouble;
+         }
+      }
+      : inline_push {
+         regex            \= (')
+         styles []         = .stringsingle;
+         default_style     = .stringsingle
+         : pop {
+            regex      \= (')
+            styles []   = .stringsingle;
+         }
+      }
+      
+   }
+   
+   codeblock : context {
+      : pattern {
+         regex      \= (forEach|for|if|try|catch|do|while|var|const|let|function)
+         styles [] = .support;
+      }
+      
+      : pattern {
+         regex      \= (chunkStart|chunkEnd)
+         styles [] = .constName;
+      }
+      
+      // : include "primitives" ;
+      
+   }
 }

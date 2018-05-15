@@ -27,14 +27,26 @@
       <key>patterns</key>
       <array> 
         <dict>
+          <key>match</key>
+          <string>(&lt;#-?\s+end\s+-?#&gt;)</string>
+          <key>captures</key>
+          <dict>
+            <key>1</key>
+            <dict>
+              <key>name</key>
+              <string>invalid.illegal.template</string>
+            </dict>
+          </dict>
+        </dict>
+        <dict>
           <key>begin</key>
-          <string>(&lt;#@)</string>
+          <string>(&lt;#-?\s+block\s+.+:\s+-?#&gt;)</string>
           <key>beginCaptures</key>
           <dict>
             <key>1</key>
             <dict>
               <key>name</key>
-              <string>keyword.control.template</string>
+              <string>punctuation.definition.tag.xml.template</string>
             </dict>
           </dict>
           <key>patterns</key>
@@ -45,29 +57,34 @@
             </dict>
            </array>
           <key>end</key>
-          <string>(-?#&gt;)</string>
+          <string>(&lt;#-?\s+end\s+-?#&gt;)</string>
           <key>endCaptures</key>
           <dict>
             <key>1</key>
             <dict>
               <key>name</key>
-              <string>keyword.control.template</string>
+              <string>punctuation.definition.tag.xml.template</string>
             </dict>
           </dict>
         </dict>
         <dict>
           <key>begin</key>
-          <string>(&lt;#-?)</string>
+          <string>(&lt;#@)</string>
           <key>beginCaptures</key>
           <dict>
             <key>1</key>
             <dict>
               <key>name</key>
-              <string>keyword.control.template</string>
+              <string>punctuation.definition.tag.xml.template</string>
             </dict>
           </dict>
-          <key>contentName</key>
-          <string>source.js.template</string>
+          <key>patterns</key>
+          <array> 
+            <dict>
+              <key>include</key>
+              <string>#main__2</string>
+            </dict>
+           </array>
           <key>end</key>
           <string>(-?#&gt;)</string>
           <key>endCaptures</key>
@@ -75,19 +92,7 @@
             <key>1</key>
             <dict>
               <key>name</key>
-              <string>keyword.control.template</string>
-            </dict>
-          </dict>
-        </dict>
-        <dict>
-          <key>match</key>
-          <string>(//.*)</string>
-          <key>captures</key>
-          <dict>
-            <key>1</key>
-            <dict>
-              <key>name</key>
-              <string>comment.template</string>
+              <string>punctuation.definition.tag.xml.template</string>
             </dict>
           </dict>
         </dict>
@@ -99,14 +104,14 @@
             <key>1</key>
             <dict>
               <key>name</key>
-              <string>keyword.control.template</string>
+              <string>punctuation.definition.tag.xml.template</string>
             </dict>
           </dict>
           <key>patterns</key>
           <array> 
             <dict>
               <key>include</key>
-              <string>source.js</string>
+              <string>#main__3</string>
             </dict>
            </array>
           <key>end</key>
@@ -116,7 +121,36 @@
             <key>1</key>
             <dict>
               <key>name</key>
-              <string>keyword.control.template</string>
+              <string>punctuation.definition.tag.xml.template</string>
+            </dict>
+          </dict>
+        </dict>
+        <dict>
+          <key>begin</key>
+          <string>(&lt;#-?)(?!\{)</string>
+          <key>beginCaptures</key>
+          <dict>
+            <key>1</key>
+            <dict>
+              <key>name</key>
+              <string>punctuation.definition.tag.xml.template</string>
+            </dict>
+          </dict>
+          <key>patterns</key>
+          <array> 
+            <dict>
+              <key>include</key>
+              <string>#main__4</string>
+            </dict>
+           </array>
+          <key>end</key>
+          <string>(-?#&gt;)</string>
+          <key>endCaptures</key>
+          <dict>
+            <key>1</key>
+            <dict>
+              <key>name</key>
+              <string>punctuation.definition.tag.xml.template</string>
             </dict>
           </dict>
         </dict>
@@ -134,21 +168,208 @@
         </dict>
        </array>
     </dict>
-    <key>main__1</key>
+    <key>codeblock</key>
     <dict>
       <key>patterns</key>
       <array> 
         <dict>
           <key>match</key>
-          <string>(\w+)\s*(.*)(?=-?#&gt;)</string>
+          <string>(forEach|for|if|try|catch|do|while|var|const|let|function)</string>
           <key>captures</key>
           <dict>
             <key>1</key>
             <dict>
               <key>name</key>
-              <string>entity.name.function.template</string>
+              <string>keyword.control.conditional.js.template</string>
             </dict>
-            <key>2</key>
+          </dict>
+        </dict>
+        <dict>
+          <key>match</key>
+          <string>(chunkStart|chunkEnd)</string>
+          <key>captures</key>
+          <dict>
+            <key>1</key>
+            <dict>
+              <key>name</key>
+              <string>entity.name.type.js.template</string>
+            </dict>
+          </dict>
+        </dict>
+       </array>
+    </dict>
+    <key>main__1</key>
+    <dict>
+      <key>patterns</key>
+      <array> 
+        <dict>
+          <key>include</key>
+          <string>#main</string>
+        </dict>
+       </array>
+    </dict>
+    <key>main__2</key>
+    <dict>
+      <key>patterns</key>
+      <array> 
+        <dict>
+          <key>include</key>
+          <string>#registeredDirectives</string>
+        </dict>
+       </array>
+    </dict>
+    <key>main__3</key>
+    <dict>
+      <key>patterns</key>
+      <array> 
+        <dict>
+          <key>include</key>
+          <string>#registeredCommands</string>
+        </dict>
+        <dict>
+          <key>include</key>
+          <string>#primitives</string>
+        </dict>
+       </array>
+    </dict>
+    <key>main__4</key>
+    <dict>
+      <key>patterns</key>
+      <array> 
+        <dict>
+          <key>include</key>
+          <string>#codeblock</string>
+        </dict>
+       </array>
+    </dict>
+    <key>primitives</key>
+    <dict>
+      <key>patterns</key>
+      <array> 
+        <dict>
+          <key>begin</key>
+          <string>(\()</string>
+          <key>beginCaptures</key>
+          <dict>
+            <key>1</key>
+            <dict>
+              <key>name</key>
+              <string>punctuation.accessor.js.template</string>
+            </dict>
+          </dict>
+          <key>patterns</key>
+          <array> 
+            <dict>
+              <key>include</key>
+              <string>#primitives__1</string>
+            </dict>
+           </array>
+          <key>end</key>
+          <string>(\))</string>
+          <key>endCaptures</key>
+          <dict>
+            <key>1</key>
+            <dict>
+              <key>name</key>
+              <string>punctuation.accessor.js.template</string>
+            </dict>
+          </dict>
+        </dict>
+        <dict>
+          <key>match</key>
+          <string>(\))</string>
+          <key>captures</key>
+          <dict>
+            <key>1</key>
+            <dict>
+              <key>name</key>
+              <string>invalid.illegal.template</string>
+            </dict>
+          </dict>
+        </dict>
+        <dict>
+          <key>match</key>
+          <string>(,)</string>
+          <key>captures</key>
+          <dict>
+            <key>1</key>
+            <dict>
+              <key>name</key>
+              <string>punctuation.accessor.js.template</string>
+            </dict>
+          </dict>
+        </dict>
+        <dict>
+          <key>match</key>
+          <string>(\s|\t)</string>
+          <key>captures</key>
+          <dict>
+            <key>1</key>
+            <dict>
+              <key>name</key>
+              <string>punctuation.accessor.js.template</string>
+            </dict>
+          </dict>
+        </dict>
+        <dict>
+          <key>include</key>
+          <string>#strings</string>
+        </dict>
+        <dict>
+          <key>match</key>
+          <string>([\.\+\w\d\x{005c}\:\!]*)</string>
+          <key>captures</key>
+          <dict>
+            <key>1</key>
+            <dict>
+              <key>name</key>
+              <string>variable.other.readwrite.js.template</string>
+            </dict>
+          </dict>
+        </dict>
+       </array>
+    </dict>
+    <key>primitives__1</key>
+    <dict>
+      <key>patterns</key>
+      <array> 
+        <dict>
+          <key>include</key>
+          <string>#primitives</string>
+        </dict>
+        <dict>
+          <key>include</key>
+          <string>#strings</string>
+        </dict>
+       </array>
+    </dict>
+    <key>registeredCommands</key>
+    <dict>
+      <key>patterns</key>
+      <array> 
+        <dict>
+          <key>begin</key>
+          <string>(partial|content)(?=\s*\()</string>
+          <key>beginCaptures</key>
+          <dict>
+            <key>1</key>
+            <dict>
+              <key>name</key>
+              <string>entity.name.type.js.template</string>
+            </dict>
+          </dict>
+          <key>patterns</key>
+          <array> 
+            <dict>
+              <key>include</key>
+              <string>#registeredCommands__1</string>
+            </dict>
+           </array>
+          <key>end</key>
+          <string>(\s*)(?=})</string>
+          <key>endCaptures</key>
+          <dict>
+            <key>1</key>
             <dict>
               <key>name</key>
               <string>comment.template</string>
@@ -157,7 +378,134 @@
         </dict>
        </array>
     </dict>
-    <key>main__2</key>
+    <key>registeredCommands__1</key>
+    <dict>
+      <key>patterns</key>
+      <array> 
+        <dict>
+          <key>include</key>
+          <string>#primitives</string>
+        </dict>
+       </array>
+    </dict>
+    <key>registeredDirectives</key>
+    <dict>
+      <key>patterns</key>
+      <array> 
+        <dict>
+          <key>match</key>
+          <string>(noIndent)(?=\s*-?#&gt;)</string>
+          <key>captures</key>
+          <dict>
+            <key>1</key>
+            <dict>
+              <key>name</key>
+              <string>entity.name.type.js.template</string>
+            </dict>
+          </dict>
+        </dict>
+        <dict>
+          <key>begin</key>
+          <string>(chunks|context|alias|extend|requireAs)(?=\s)</string>
+          <key>beginCaptures</key>
+          <dict>
+            <key>1</key>
+            <dict>
+              <key>name</key>
+              <string>entity.name.type.js.template</string>
+            </dict>
+          </dict>
+          <key>patterns</key>
+          <array> 
+            <dict>
+              <key>include</key>
+              <string>#registeredDirectives__1</string>
+            </dict>
+           </array>
+          <key>end</key>
+          <string>(\s*)(?=-?#&gt;)</string>
+          <key>endCaptures</key>
+          <dict>
+            <key>1</key>
+            <dict>
+              <key>name</key>
+              <string>comment.template</string>
+            </dict>
+          </dict>
+        </dict>
+       </array>
+    </dict>
+    <key>registeredDirectives__1</key>
+    <dict>
+      <key>patterns</key>
+      <array> 
+        <dict>
+          <key>include</key>
+          <string>#strings</string>
+        </dict>
+       </array>
+    </dict>
+    <key>strings</key>
+    <dict>
+      <key>patterns</key>
+      <array> 
+        <dict>
+          <key>begin</key>
+          <string>(&quot;)</string>
+          <key>beginCaptures</key>
+          <dict>
+            <key>1</key>
+            <dict>
+              <key>name</key>
+              <string>string.quoted.double.js.template</string>
+            </dict>
+          </dict>
+          <key>contentName</key>
+          <string>string.quoted.double.js.template</string>
+          <key>end</key>
+          <string>(&quot;)</string>
+          <key>endCaptures</key>
+          <dict>
+            <key>1</key>
+            <dict>
+              <key>name</key>
+              <string>string.quoted.double.js.template</string>
+            </dict>
+          </dict>
+        </dict>
+        <dict>
+          <key>begin</key>
+          <string>(&apos;)</string>
+          <key>beginCaptures</key>
+          <dict>
+            <key>1</key>
+            <dict>
+              <key>name</key>
+              <string>string.quoted.single.js.template</string>
+            </dict>
+          </dict>
+          <key>contentName</key>
+          <string>string.quoted.single.js.template</string>
+          <key>end</key>
+          <string>(&apos;)</string>
+          <key>endCaptures</key>
+          <dict>
+            <key>1</key>
+            <dict>
+              <key>name</key>
+              <string>string.quoted.single.js.template</string>
+            </dict>
+          </dict>
+        </dict>
+       </array>
+    </dict>
+    <key>strings__1</key>
+    <dict>
+      <key>patterns</key>
+      <array> 
+       </array>
+    </dict>
+    <key>strings__2</key>
     <dict>
       <key>patterns</key>
       <array> 

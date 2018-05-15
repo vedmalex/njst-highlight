@@ -13,50 +13,19 @@
     "contributes": {
         "languages": [
             {
-                "id": "jstemplate",
-                "aliases": [
-                    "JavaScriptTemplate",
-                    "js"
-                ],
-                "extensions": [
-                    ".njs"
-                ],
-                "configuration": "./javascript-template.json"
-            },
-            {
                 "id": "template",
                 "aliases": [
                     "Template",
                     "templ"
                 ],
                 "extensions": [
-                    ".templ"
+                    ".templ",
+                    ".njs"
                 ],
                 "configuration": "./javascript-template.json"
-            },
-            {
-                "id": "graphqltemplate",
-                "aliases": [
-                    "GraphQlTemplate",
-                    "GQLT"
-                ],
-                "extensions": [
-                    ".tgraphql"
-                ],
-                "configuration": "./graphql.json"
             }
         ],
         "grammars": [
-            {
-                "language": "graphqltemplate",
-                "scopeName": "source.graphql.template",
-                "path": "./syntaxes/graphqlTemplate.tmLanguage.json"
-            },
-            {
-                "language": "jstemplate",
-                "scopeName": "source.js.template",
-                "path": "./syntaxes/TemplateJavaScript.tmLanguage.json"
-            },
             {
                 "language": "template",
                 "scopeName": "source.template",
