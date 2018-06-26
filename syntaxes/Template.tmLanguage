@@ -34,7 +34,7 @@
         </dict>
         <dict>
           <key>begin</key>
-          <string>(&lt;#-?\s+(block|slot)\s+.+:\s+-?#&gt;)</string>
+          <string>(&lt;#-?\s+(block|slot)\s+.+\s:\s+-?#&gt;)</string>
           <key>beginCaptures</key>
           <dict>
             <key>1</key>
