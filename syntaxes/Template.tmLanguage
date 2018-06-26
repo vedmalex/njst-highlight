@@ -29,18 +29,12 @@
         <dict>
           <key>match</key>
           <string>(&lt;#-?\s+end\s+-?#&gt;)</string>
-          <key>captures</key>
-          <dict>
-            <key>1</key>
-            <dict>
-              <key>name</key>
-              <string>invalid.illegal.template</string>
-            </dict>
-          </dict>
+          <key>name</key>
+          <string>invalid.illegal.template</string>
         </dict>
         <dict>
           <key>begin</key>
-          <string>(&lt;#-?\s+block\s+.+:\s+-?#&gt;)</string>
+          <string>(&lt;#-?\s+(block|slot)\s+.+:\s+-?#&gt;)</string>
           <key>beginCaptures</key>
           <dict>
             <key>1</key>
@@ -98,7 +92,7 @@
         </dict>
         <dict>
           <key>begin</key>
-          <string>([\x{0023}\x{007c}\x{0021}]{)</string>
+          <string>(#{|!{)</string>
           <key>beginCaptures</key>
           <dict>
             <key>1</key>
@@ -157,14 +151,8 @@
         <dict>
           <key>match</key>
           <string>(-?#&gt;)</string>
-          <key>captures</key>
-          <dict>
-            <key>1</key>
-            <dict>
-              <key>name</key>
-              <string>invalid.illegal.template</string>
-            </dict>
-          </dict>
+          <key>name</key>
+          <string>invalid.illegal.template</string>
         </dict>
        </array>
     </dict>
@@ -175,26 +163,14 @@
         <dict>
           <key>match</key>
           <string>(forEach|for|if|try|catch|do|while|var|const|let|function)</string>
-          <key>captures</key>
-          <dict>
-            <key>1</key>
-            <dict>
-              <key>name</key>
-              <string>keyword.control.conditional.js.template</string>
-            </dict>
-          </dict>
+          <key>name</key>
+          <string>keyword.control.conditional.js.template</string>
         </dict>
         <dict>
           <key>match</key>
           <string>(chunkStart|chunkEnd)</string>
-          <key>captures</key>
-          <dict>
-            <key>1</key>
-            <dict>
-              <key>name</key>
-              <string>entity.name.type.js.template</string>
-            </dict>
-          </dict>
+          <key>name</key>
+          <string>entity.name.type.js.template</string>
         </dict>
        </array>
     </dict>
@@ -278,38 +254,20 @@
         <dict>
           <key>match</key>
           <string>(\))</string>
-          <key>captures</key>
-          <dict>
-            <key>1</key>
-            <dict>
-              <key>name</key>
-              <string>invalid.illegal.template</string>
-            </dict>
-          </dict>
+          <key>name</key>
+          <string>invalid.illegal.template</string>
         </dict>
         <dict>
           <key>match</key>
           <string>(,)</string>
-          <key>captures</key>
-          <dict>
-            <key>1</key>
-            <dict>
-              <key>name</key>
-              <string>punctuation.accessor.js.template</string>
-            </dict>
-          </dict>
+          <key>name</key>
+          <string>punctuation.accessor.js.template</string>
         </dict>
         <dict>
           <key>match</key>
           <string>(\s|\t)</string>
-          <key>captures</key>
-          <dict>
-            <key>1</key>
-            <dict>
-              <key>name</key>
-              <string>punctuation.accessor.js.template</string>
-            </dict>
-          </dict>
+          <key>name</key>
+          <string>punctuation.accessor.js.template</string>
         </dict>
         <dict>
           <key>include</key>
@@ -318,14 +276,8 @@
         <dict>
           <key>match</key>
           <string>([\.\+\w\d\x{005c}\:\!]*)</string>
-          <key>captures</key>
-          <dict>
-            <key>1</key>
-            <dict>
-              <key>name</key>
-              <string>variable.other.readwrite.js.template</string>
-            </dict>
-          </dict>
+          <key>name</key>
+          <string>variable.other.readwrite.js.template</string>
         </dict>
        </array>
     </dict>
@@ -395,14 +347,8 @@
         <dict>
           <key>match</key>
           <string>(noIndent)(?=\s*-?#&gt;)</string>
-          <key>captures</key>
-          <dict>
-            <key>1</key>
-            <dict>
-              <key>name</key>
-              <string>entity.name.type.js.template</string>
-            </dict>
-          </dict>
+          <key>name</key>
+          <string>entity.name.type.js.template</string>
         </dict>
         <dict>
           <key>begin</key>

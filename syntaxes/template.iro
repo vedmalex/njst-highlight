@@ -4,7 +4,7 @@ file_extensions [] = templ;
 __directive_start =  <#@
 __codeblock_start =  <#-?
 __codeblock_end =  -?#>
-__inline_start =  [#|!]{
+__inline_start =  #{|!{ 
 __inline_end =  }
 
 
@@ -67,7 +67,7 @@ contexts[] {
       }
          
       : inline_push {
-         regex      \= ($${__codeblock_start}\s+block\s+.+:\s+$${__codeblock_end})
+         regex      \= ($${__codeblock_start}\s+(block|slot)\s+.+:\s+$${__codeblock_end})
          styles []   =  .brackets1;
          // default_style     = .directive
          : pop {
