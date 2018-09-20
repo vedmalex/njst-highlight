@@ -352,7 +352,7 @@
         </dict>
         <dict>
           <key>begin</key>
-          <string>(chunks|context|alias|extend|requireAs)(?=\s)</string>
+          <string>(chunks|useHash|context|alias|extend|requireAs)(?=\s)</string>
           <key>beginCaptures</key>
           <dict>
             <key>1</key>
